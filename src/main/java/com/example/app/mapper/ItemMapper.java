@@ -9,8 +9,11 @@ import com.example.app.domain.Item;
 
 @Mapper
 public interface ItemMapper {
-
-	@Select("SELECT * FROM items")
-	List<Item> findAll();
+	//Itemテーブルから全データゲット
+	List<Item> selectItems();
+	//Itemテーブルにデータを追加
+	void addItem(Item item);
+	//itemテーブルのIDをもとに削除する
+	void deleteById(int id);
 
 }

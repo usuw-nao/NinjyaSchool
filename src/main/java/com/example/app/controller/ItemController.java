@@ -1,49 +1,53 @@
 package com.example.app.controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.app.domain.Item;
 import com.example.app.mapper.ItemMapper;
 
 @Controller
-@RequestMapping("/item")
 public class ItemController {
 	
 	@Autowired
-	private ItemMapper mapper;
+	ItemMapper mapper;
 
-	@GetMapping
-	public String list() {
-		return "item/list";
+	//全表示
+	@GetMapping("/")
+	public String list(Model model)throws Exception {
+		model.addAttribute("items",mapper.selectItems());
+		return "items";
 	}
-
-	@GetMapping("/add")
-	public String addGet() {
-		return "item/add";
+	
+	//道具追加フォームの表示
+	@GetMapping("add")
+	public String add(Model model)throws Exception {
+		Item item = new Item();
+		model.addAttribute("item",item);
+		return "addItem";
 	}
-
-	@PostMapping("/add")
-	public String addPost(@RequestParam String name, @RequestParam Integer number, @RequestParam Integer no,
-			@RequestParam Integer yes, @RequestParam Integer destroy, @RequestParam String text, HttpSession session) {
-		if (name.isBlank()) {
-			return "item/add";
+	
+	//道具追加
+	@PostMapping("add")
+	public String add(@Valid Item item, Errors errors)throws Exception{
+		if(errors.hasErrors()) {
+			return "addItem";
 		}
-		session.setAttribute("itemName", name);
-		session.setAttribute("itemNumber", number);
-		session.setAttribute("itemNo", no);
-		session.setAttribute("itemYes", yes);
-		session.setAttribute("itemDestroy", destroy);
-		session.setAttribute("itemText", text);
-		return "redirect:/item/addDone";
+		mapper.addItem(item);
+		return "redirect:/";
 	}
+	
+	
 
 	@GetMapping("/addDone")
 	public String addDone(HttpSession session, Model model) {

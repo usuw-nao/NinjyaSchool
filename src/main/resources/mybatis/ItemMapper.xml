@@ -3,20 +3,48 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.app.mapper.ItemMapper">
 
-	<select id="selectItems"
-		resultType="com.example.app.domain.Item">
-		SELECT * FROM items
+	<select id="selectAll" resultType="Item">
+		SELECT
+		items.id,items.name,items.number,items.no,
+		items.yes,items.destroy,items.text,
+		item_types.name as typeName
+		from
+		items
+		join item_types
+		on items.item_id = item_types.id
 	</select>
 
-	<insert id="addItem" parameterType="com.example.app.domain.Item">
-		INSERT INTO items (itemId, name, number, no, yes, destroy, text)
-		VALUES(#{itemId}, #{name}, #{number}, #{no}, #{yes}, #{destroy},
+	<select id="selectById" parameterType="int" resultType="Item">
+		select
+		items.id,items.name,items.number,items.no,
+		items.yes,items.destroy,items.text,
+		items.item_id as typeId
+		from items
+		where items.id= #{id}
+	</select>
+
+
+	<insert id="insert" parameterType="Item">
+		INSERT INTO items (itemId,
+		name, number, no, yes, destroy, text)
+		VALUES(#{itemId}, #{name},
+		#{number}, #{no}, #{yes}, #{destroy},
 		#{text})
 	</insert>
 
+	<update id="update" parameterType="Item">
+		update items
+		set item_id=#{itemId} name = #{name},numbre=#{number},no
+		=#{no},yes=#{yes},
+		destroy=#{destroy},text=#{text}
+		where id=#{id}
+	</update>
+
+
 	<delete id="deleteById" parameterType="int">
 		DELETE FROM items
-		WHERE id = #{id}
+		WHERE id
+		= #{id}
 	</delete>
 
 </mapper>

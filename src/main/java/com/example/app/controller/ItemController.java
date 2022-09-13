@@ -15,18 +15,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.app.domain.Item;
 import com.example.app.mapper.ItemMapper;
+import com.example.app.service.ItemService;
 
 @Controller
+@RequestMapping("/items")
 public class ItemController {
 	
 	@Autowired
-	ItemMapper mapper;
+	ItemService service;
 
-	//全表示
-	@GetMapping("/")
+	
+	@GetMapping
 	public String list(Model model)throws Exception {
-		model.addAttribute("items",mapper.selectItems());
-		return "items";
+		model.addAttribute("items",service.getItemList());
+		return "items/list";
 	}
 	
 	//道具追加フォームの表示
@@ -43,7 +45,7 @@ public class ItemController {
 		if(errors.hasErrors()) {
 			return "addItem";
 		}
-		mapper.addItem(item);
+		service.addItem(item);
 		return "redirect:/";
 	}
 	

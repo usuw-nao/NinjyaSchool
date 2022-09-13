@@ -9,11 +9,17 @@ import com.example.app.domain.Item;
 
 @Mapper
 public interface ItemMapper {
-	//Itemテーブルから全データゲット
-	List<Item> selectItems();
-	//Itemテーブルにデータを追加
-	void addItem(Item item);
-	//itemテーブルのIDをもとに削除する
-	void deleteById(int id);
+	// Itemテーブルから全データゲット
+	List<Item> selectAll() throws Exception;
+
+	Item selectById(Integer id) throws Exception;
+
+	// Itemテーブルにデータを追加
+	void insert(Item item) throws Exception;
+
+	void update(Item item) throws Exception;
+
+	// itemテーブルのIDをもとに削除する
+	void deleteById(Integer id) throws Exception;
 
 }

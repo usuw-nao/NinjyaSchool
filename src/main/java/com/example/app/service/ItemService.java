@@ -1,36 +1,21 @@
 package com.example.app.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.example.app.domain.Item;
+import com.example.app.domain.ItemType;
 
-@Service
-public class ItemService {
+public interface ItemService {
+	List<Item> getItemList() throws Exception;
 
-	private List<Item> itemList;
+	Item getItemById(Integer id) throws Exception;
 
-	
-	
+	void addItem(Item item) throws Exception;
 
-	public List<Item> getItemList() {
-		return itemList;
-	}
+	void editItem(Item item) throws Exception;
 
-	public Item getItemById(int id) {
-		return itemList.get(id);
-	}
+	void deleteItem(Integer id) throws Exception;
 
-	private Date getDate(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		try {
-			return sdf.parse(date);
-		} catch (ParseException e) {
-			return new Date();
-		}
-	}
+	List<ItemType> getTypeList() throws Exception;
+
 }
